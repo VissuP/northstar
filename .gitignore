@@ -1,0 +1,6 @@
+marathon.json
+marathon_app.json
+marathon_base.json
+Dockerfile.generated
+target
+.idea

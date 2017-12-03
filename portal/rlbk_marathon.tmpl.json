@@ -1,0 +1,6 @@
+{
+  "id": "@APPID@",
+  "labels": {
+    "version": "@ROLLBACK_VERSION@"
+  }
+}

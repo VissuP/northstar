@@ -1,0 +1,42 @@
+{
+  "container": {
+    "docker": {
+      "portMappings": [{
+        "containerPort": 8080,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 3,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "ADVERTISED_PORT": "8080",
+
+    "KAFKA_BROKERS_HOST_PORT": "@KAFKA_BROKERS_HOST_PORT@",
+    "ZOOKEEPER_HOST_PORT": "@ZOOKEEPER_HOST_PORT@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+
+    "THINGSPACE_PROTOCOL": "http",
+    "THINGSPACE_HOST_PORT": "@THINGSPACE_USER_HOST_PORT@",
+    "THINGSPACE_AUTH_HOST_PORT": "@THINGSPACE_AUTH_HOST_PORT@",
+    "THINGSPACE_CLIENT_ID": "@CLIENT_ID@",
+    "THINGSPACE_SECRET": "@CLIENT_SECRET@",
+    "THINGSPACE_CLIENT_SCOPES": "ts.configuration",
+    "THINGSPACE_USER_SCOPES": "ts.user ts.user.ro ts.transformation ts.transformation.ro ts.notebook ts.notebook.ro ts.model.ro ts.nsobject.ro",
+
+    "NORTHSTARAPI_PROTOCOL":"http",
+    "NORTHSTARAPI_HOST_PORT":"@NORTHSTARAPI_HOST_PORT@",
+    "ENABLE_DEBUG": "@ENABLE_DEBUG@",
+    "CONNECTION_BUFFER_SIZE":"1024"
+  }
+}

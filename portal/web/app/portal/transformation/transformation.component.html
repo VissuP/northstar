@@ -1,0 +1,56 @@
+<alerts [message]="alert"></alerts>
+<div class="pages pages-margin">
+    <h4 class="title">Transformations</h4>
+    <p>Manage the transformation used to execute code. You can create, edit, or delete transformations.</p>
+
+    <div class="button-panel">
+        <span defaultOverlayTarget></span>
+        <button id="addTransformationButton" class="btn btn-standard fa fa-plus" (click)="launchModal()" [disabled]="!this.schemas"> Add Transformation</button>
+    </div>
+    <ngx-datatable #transformationtable class="material expandable" [rows]="transformations" [columnMode]='force' [headerHeight]="50" [footerHeight]="50" [rowHeight]="auto" [scrollbarH]="true" [limit]="8">
+        <ngx-datatable-row-detail [rowHeight]="75">
+            <template let-row="row" ngx-datatable-row-detail-template>
+                <div class="row-details">
+                    <div>
+                        <strong>Description</strong>{{row.getDescription()}}<br>
+                        <strong>Schedule</strong> {{row.getScheduleDescription()}}
+                    </div>
+                </div>
+            </template>
+        </ngx-datatable-row-detail>
+        <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+            <template let-row="row" ngx-datatable-cell-template>
+                <a
+                        href="#/portal/transformations"
+                        [class.icon-right]="!row.$$expanded"
+                        [class.icon-down]="row.$$expanded"
+                        title="Expand/Collapse Details"
+                        (click)="toggleExpandRow(row)">
+                </a>
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Name" [width]="200">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['name']}}
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="LastUpdated" [width]="200">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['lastUpdated']}}
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="State" [width]="100">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <span [hidden]="!updating" class="fa fa-refresh fa-spin"></span>
+                <span>{{row['state']}} </span>
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [width]="auto" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+            <template let-row="row" ngx-datatable-cell-template>
+                <button class="btn btn-link text-align:left" (click)="loadResults(row.id)">Results</button>
+                <button class="btn btn-link action-button" (click)="launchModal(row)" [disabled]="!this.schemas">Edit</button>
+                <button class="btn btn-link action-button" title="delete" (click)="delete(row)">Delete</button>
+            </template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

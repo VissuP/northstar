@@ -1,0 +1,4 @@
+{
+  "scope": [{"Methods":["GET"], "Paths":["/path"]}]
+}
+

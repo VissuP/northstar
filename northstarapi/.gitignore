@@ -1,0 +1,5 @@
+northstarapi
+Dockerfile.generated
+marathon_app.json
+marathon_base.json
+marathon.json

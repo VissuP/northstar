@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="https://codemirror.net/theme/monokai.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/material.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/solarized.css">
+<span defaultOverlayTarget></span>
+
+
+<alerts [message]="alert"></alerts>
+<div class="pages" *ngIf="portfolio">
+    <div class="portfolio portfolio-default">
+        <div class="container-fluid">
+            <div class="porfolio-header">
+                <h4>
+                    <div>{{portfolio.name}}</div>
+                </h4>
+            </div>
+
+            <ngx-datatable *ngIf="portfolio" class='material' [rows]='portfolio.files' [columnMode]='force' [headerHeight]="50" [footerHeight]="50" [rowHeight]="auto" [scrollbarH]="true" [limit]="8">
+                <ngx-datatable-column name="Name" [width]="200">
+                    <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['name']}}
+            </template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="LastModified" [width]="350">
+                    <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['lastModified']}}
+            </template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Size" [width]="350">
+                    <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['size']}}
+            </template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="ETag" [width]="350">
+                    <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['etag']}}
+            </template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Actions" [width]="300">
+                    <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <button class="btn btn-link text-align:left" (click)="downloadFile(portfolio.name, row.name)">Download</button>
+            </template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+
+</div>

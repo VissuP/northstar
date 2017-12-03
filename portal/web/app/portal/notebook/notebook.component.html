@@ -1,0 +1,31 @@
+<alerts [message]="alert"></alerts>
+<div class="pages pages-margin" xmlns="http://www.w3.org/1999/html">
+    <h4 class="title">Notebooks</h4>
+    <p>Manage your notebooks. You can create, edit, or delete .</p>
+    <div class="button-panel">
+        <span defaultOverlayTarget></span>
+        <!-- HTML creates a full UI element for upload. Button, file list, everything. All we want is a button -->
+        <label class="btn btn-secondary fa fa-upload">
+            Import <input type="file" class="display-none" (change)="import($event)">
+        </label>
+        <button class="btn btn-secondary fa fa-plus" [routerLink]="['../editor']">Add Notebook</button>
+    </div>
+    <ngx-datatable *ngIf="notebooks" class='material' [rows]='notebooks' [columnMode]='force' [headerHeight]="50" [footerHeight]="50" [rowHeight]="auto" [scrollbarH]="true" [limit]="8">
+        <ngx-datatable-column name="Name" [width]="200">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['name']}}
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Permissions" [width]="350">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['permissions']}}
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Actions" [width]="300">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <button class="btn btn-link text-align:left" (click)="loadNotebook(row.id)">Open</button>
+                    <button class="btn btn-link text-align:left" (click)="delete(row)" *ngIf="row.isOwner()">Delete</button>
+            </template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

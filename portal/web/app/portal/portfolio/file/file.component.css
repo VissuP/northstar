@@ -1,0 +1,28 @@
+.porfolio {
+    border-radius: 0px;
+}
+
+.porfolio-nav {
+    margin-top: 0.50%;
+}
+
+.porfolio-header {
+    padding-top: 4px;
+    padding-right: 20px;
+}
+
+.autoRefresh {
+    padding-top: 4px;
+}
+
+.container-fluid {
+    margin-top: 0.35%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.dropdown-menu li:hover {
+    cursor: pointer;
+}
+
+

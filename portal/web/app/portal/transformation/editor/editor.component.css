@@ -1,0 +1,127 @@
+/* Transformation Modal */
+.transformation-dialog {
+    position:fixed;
+    top:15%;
+    left:40%;
+    width: 750px;
+    background-color: white;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+/* Runtime Modal Table */
+.div-table {
+    margin-bottom: 10px;
+}
+
+.div-table-row{
+    display:table-row;
+    width:750px;
+    clear:both;
+    background-color:white;
+}
+
+.div-table-col{
+    float:left;
+    display:table-column;
+    width:325px;
+    margin-right: 10px;
+    background-color:white;
+    border-radius: 6px;
+}
+
+/* Tab Style */
+.tab-content {
+    margin-top: 0;
+    border-left: 2px solid #ddd;
+    border-right: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    border: none;
+}
+
+.tab-pane-container {
+    padding-top: 15px;
+}
+
+.panel-body {
+    padding-right: 0px;
+}
+
+/* UI formatting */
+.col-padding {
+    padding-left: 15px;
+    padding-right: 0px;
+}
+
+.row-padding {
+    padding-top: 10px;
+}
+
+.input-md {
+    width: 90%;
+    vertical-align:top;
+}
+
+.select-md {
+    height:24px;
+    width: 90%;
+    vertical-align:top;
+}
+
+.textarea-lg {
+    height:100px;
+    width:95%;
+    resize: none;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}
+
+/* Scheduler */
+.cell {
+    display:table-cell;
+    border-spacing:5px;
+    background-color: white;
+}
+
+.lastcell {
+    display:table-cell;
+    border-spacing:5px;
+    margin-left:150px;
+    background-color: white;
+}
+
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+.selectbox {
+    height: 26px;
+}
+
+.noborders {
+    border: none;
+}

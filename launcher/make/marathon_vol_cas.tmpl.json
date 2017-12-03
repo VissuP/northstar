@@ -1,0 +1,16 @@
+{
+  "container": {
+    "volumes": [
+      {
+        "containerPath": "@CONT_PATH@/data",
+        "hostPath": "@VOL_PATH@/data",
+        "mode": "@MODE@"
+      },
+      {
+        "containerPath": "@CONT_PATH@/commitlog",
+        "hostPath": "@VOL_PATH@/commitlog",
+        "mode": "@MODE@"
+      }
+    ]
+    }
+}

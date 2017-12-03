@@ -1,0 +1,21 @@
+table {
+  width: 100%;
+}
+th {
+  background-color: #007f54;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #c3ddd4;
+}
+
+.results-row {
+  padding-left:35px;
+  height: 300px;
+  overflow:scroll
+}
+
+.tableStyle {
+  margin-top:5%;
+}

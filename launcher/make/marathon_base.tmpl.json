@@ -1,0 +1,63 @@
+{
+  "id": "@APPID@",
+
+  "mem": @MAX_MEMORY@,
+
+  "instances": @NUM_INSTANCES@,
+
+  "cpus": @GOMAXPROCS@,
+
+  "labels": {
+    "version": "@UPGRADE_VERSION@"
+  },
+
+    "upgradeStrategy": {
+        "minimumHealthCapacity": @MINIMUM_HEALTH_CAPACITY@,
+        "maximumOverCapacity": @MAXIMUM_OVER_CAPACITY@
+    },
+  "constraints": [
+    @MARATHON_CONSTRAINTS@
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": @FORCE_PULL_IMAGE@,
+      "portMappings": [{
+        "containerPort": 8000,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }],
+      "image": "@MARATHON_IMAGE@",
+      "network": "BRIDGE",
+      "parameters": [
+           { "key": "log-opt", "value": "max-size=250m" },
+           { "key": "log-opt", "value": "max-file=4" }
+      ]
+    }
+  },
+  "env": {
+    "MON_GROUP": "@MON_GROUP@",
+    "MON_APP": "@APP@",
+    "MON_LOGLEVEL": "5",
+    "MON_CONTACT": "@CONTACT@",
+    "DC": "@DC@",
+    "METRICS_ENABLE": "true",
+    "METRICS_POLL_INTERVAL_SECS": "5",
+    "STATS_ERR_PERIOD": "30",
+    "STATS_OUT_PERIOD": "0",
+     "STATS_INTERVAL": "@STATS_INTERVAL@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+    "MON_CORELATIONID": "@MON_CORELATIONID@",
+    "MON_PIPE_ID": "@MON_PIPE_ID@",
+    "DKT_LOGGER_WAIT_FOR_EXIT_BEFORE_SHUTDOWN_INTERVAL_SEC":"@WAIT_SEC_AFTER_SHUTDOWN_EVENT@",
+    "DKT_LOGGER_KAFKA_CHANNEL_CLOSE_INTERVAL_SEC":"@MAX_WAIT_SEC_INHAND_WORK_COMPLETION_SIGTERM@",
+    "DKT_LOGGER_DUMP_MSG_STDOUT":"@DKT_LOGGER_DUMP_MSG_STDOUT@",
+    "DKT_LOGGER_IS_KAFKA_ENABLED": "@DKT_LOGGER_IS_KAFKA_ENABLED@"
+  },
+  "uris": ["@URIS@"],
+  "backoffSeconds": 30,
+  "backoffFactor": 2.0,
+  "maxLaunchDelaySeconds": 600
+}

@@ -1,0 +1,11 @@
+{
+  "constraints": [
+    [
+      "hostname",
+      "CLUSTER",
+      "@HOST_IPS@"
+    ]
+  ],
+   
+  "acceptedResourceRoles": @RESOURCE_ROLES@
+}

@@ -1,0 +1,196 @@
+{
+    "iterationDelayInSec": 5,
+    "maxExecutionTime": 360,
+    "defaultInitTemp": 5,
+    "credentials": {
+        "client": {
+            "id": "YourClientID",
+            "secret": "YourClientSecret",
+            "scope": "ts.account.wo ts.dakota.inventory ts.dakota.mimic"
+        },
+        "user": {
+            "password": "test",
+            "scope": "ts.account ts.user ts.nsobject.ro ts.user.ro ts.transformation ts.transformation.ro ts.runtime ts.runtime.ro  ts.notebook ts.notebook.ro ts.model.ro ts.device ts.application ts.user ts.inventory ts.device ts.device.ro ts.model.ro ts.execution"
+        }
+    },
+    "devices": [
+    ],
+    "tests": [
+        {
+            "type": "Functional",
+            "name": "NS Key-Value Operations",
+            "group": "keyvalue",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+         {
+            "type": "Functional",
+            "name": "Notebook CRUD Operations",
+            "group": "notebook_crud",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Generic execution operations",
+            "group": "generic_execution",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Notebook Table Execution",
+            "group": "notebook_execution",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Notebook Value Execution",
+            "group": "notebook_execution",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Notebook Map Execution",
+            "group": "notebook_execution",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Cell Template CRUD Operations",
+            "group": "systemwide",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Notebook Template CRUD Operations",
+            "group": "systemwide",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Template Single Device Multi Bar Execution",
+            "group": "template",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Transformation CRUD Operations",
+            "group": "transformation",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Transformation Timer Execution",
+            "group": "transformation",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "Transformation External Event Execution",
+            "group": "transformation",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NS Object Operations",
+            "group": "object",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Native Table Operations",
+            "group": "nsql_native",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Native CRUD Operations",
+            "group": "nsql_native",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Native JSON Fetch",
+            "group": "nsql_native",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Native Typed CRUD Operations",
+            "group": "nsql_native",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Native Map Blob",
+            "group": "nsql_native",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Spark Map Blob",
+            "group": "nsql_spark",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Spark JSON Fetch",
+            "group": "nsql_spark",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Spark Read Operations",
+            "group": "nsql_spark",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        },
+        {
+            "type": "Functional",
+            "name": "NSQL Spark Typed Read Operations",
+            "group": "nsql_spark",
+            "concurrency": 1,
+            "repetitions": 1,
+            "verbose": true
+        }
+    ]
+}

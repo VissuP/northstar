@@ -1,0 +1,112 @@
+<div id="page-wrapper" [ngClass]="{'open': toggle}">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar">
+            <li class="sidebar-main">
+                <a (click)="toggleSidebar()">
+                    {{getTitle()}}
+                    <span class="menu-icon glyphicon glyphicon-transfer"></span>
+                </a>
+            </li>
+
+            <!--
+             Dashboard Navigation Panel
+             Note that this uses the "routerLink" to link a route without a page reload.
+            -->
+
+            <li class="sidebar-title"><span>NAVIGATION</span></li>
+            <li class="sidebar-list">
+                <a [routerLink]="['./dashboard']">Dashboard <span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a [routerLink]="['./notebooks']">Notebooks <span class="menu-icon fa fa-book fa-fw"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a [routerLink]="['./transformations']">Transformations <span class="menu-icon fa fa-file-text-o fa-fw"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a [routerLink]="['./portfolios']">Portfolio <span class="menu-icon fa fa-file-text-o fa-fw"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a [routerLink]="['./help']">Help <span class="menu-icon fa fa-question"></span></a>
+            </li>
+        </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+        <div class="page-content">
+
+            <!-- Header Bar -->
+            <div class="row header">
+                <div class="col-xs-12">
+                    <div class="user pull-right">
+                        <div class="item dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="./../../assets/img/default-avatar.png">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">
+                                    {{user.displayName}}
+                                </li>
+                                <li class="divider"></li>
+                                <li class="link disabled">
+                                    <a href="javascript:void(0)">
+                                        Profile
+                                    </a>
+                                </li>
+                                <li class="link disabled">
+                                    <a href="javascript:void(0)">
+                                        Options
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li class="link">
+                                    <a href="#" (click)='logout()'>Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="badge badge-notify">
+                                    <div *ngIf="alertService">{{alertService.alerts.length}}</div>
+                                     <div *ngIf="!alertService">0</div>
+                                    </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">
+                                    Notifications
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div *ngFor="let alert of alertService.alerts; let i=index" style="display:inline-block;">
+                                        <button type="button" [disabled]="!alert.href" (click)="navigate(alert.href)" class="btn btn-link">{{alert.message}}</button>
+                                        <button type="button" (click)="closeAlert(i)" class="btn btn-link close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meta">
+                        <div class="page">
+                            <span style="font-weight: bold">{{getTitle()}}</span>
+                        </div>
+                        <!-- Breadcrumbs -->
+                        <breadcrumb></breadcrumb>
+                    </div>
+                </div>
+            </div>
+            <!-- End Header Bar -->
+
+            <!-- Render the content of the route component. -->
+            <router-outlet></router-outlet>
+
+        </div>
+        <!-- End Page Content -->
+    </div>
+    <!-- End Content Wrapper -->
+</div>
+<!-- End Page Wrapper -->

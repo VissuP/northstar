@@ -1,0 +1,15 @@
+{
+  "env": {
+    "VAULT_CACERT": "@VAULT_CACERT@",
+    "VAULT_TLS_ENABLED": "@VAULT_TLS_ENABLED@",
+    "GATEKEEPER_TLS_ENABLED": "@GATEKEEPER_TLS_ENABLED@",
+    "VAULT_HOST_PORT": "@VAULT_HOST_PORT@",
+    "GATEKEEPER_HOST_PORT": "@GATEKEEPER_HOST_PORT@",
+    "APP_DC": "@APP_DC@",
+    "APP_ID": "@APP_ID@",
+    "USE_VAULT": "@USE_VAULT@"
+  },
+  "uris": [
+    "@VAULT_CERT_URI@"
+  ]
+}

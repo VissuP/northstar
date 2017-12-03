@@ -1,0 +1,31 @@
+{
+  "container": {
+    "docker": {
+      "portMappings": [{
+        "containerPort": @DATA_PORT@,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 1000,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "DATA_PORT": "@DATA_PORT@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+    "CASSANDRA_HOST": "@CASSANDRA_HOST@",
+    "CASSANDRA_NATIVE_TRANSPORT_PORT": "@CASSANDRA_NATIVE_TRANSPORT_PORT@",
+    "CASSANDRA_PROTO_VERSION":"@CASSANDRA_PROTO_VERSION@",
+    "CASSANDRA_CQL_VERSION":"@CASSANDRA_CQL_VERSION@",
+    "DATACENTER":"@DATACENTER@",
+    "ENABLE_DEBUG": "@ENABLE_DEBUG@"
+  }
+}

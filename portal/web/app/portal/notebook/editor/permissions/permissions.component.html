@@ -1,0 +1,69 @@
+<!-- Runtime Form -->
+<div class="modal-dialog permissions-dialog">
+    <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header">
+            <h4>Permissions</h4>
+            <alerts [message]="alert"></alerts>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body form-horizontal">
+            <form #createForm="ngForm">
+                <div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Permissions</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody style="vertical-align: middle">
+                        <tr bgcolor="#f0f8ff">
+                            <td>
+                                <ng2-completer  name="userFilter" [(ngModel)]="newUser.displayName" [dataService]="dataService" [minSearchLength]="0"></ng2-completer>
+                            </td>
+                            <td>
+                                <select name="new_permissions" [(ngModel)]="newUser.permissions">
+                                    <option *ngFor="let permission of Permissions"
+                                            [selected]="permission == newUser.permissions">{{permission}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-link" (click)="add(newUser)" [disabled]="addDisabled()">Add</button>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let user of users; let i = index">
+                            <td>{{user.displayName}}</td>
+                            <td>
+                                <!-- NOTE: A unique name is needed for each select so that Angular can tell the difference between them -->
+                                <select name="permissions_{{i}}" *ngIf="!user.isOwner()" [(ngModel)]="user.permissions" (change)="usersChanged = true">
+                                    <option *ngFor="let permission of Permissions" [ngValue]="permission">
+                                        {{permission}}
+                                    </option>
+                                </select>
+                                <div *ngIf="user.isOwner()">
+                                    Owner
+                                </div>
+                            </td>
+                            <td>
+                                <div *ngIf="!user.isOwner()">
+                                    <button class="btn btn-link" (click)="remove(user)">Remove</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" (click)="submit()" [disabled]="!usersChanged">Save</button>
+                    <button type="button" class="btn btn-default" (click)="exit()">Exit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{
+    "constraints": [
+        ["SIOCLUSTER", "LIKE", "POD1"],
+        ["STORAGEROLE", "LIKE", "SDS"],
+        ["ITRACK", "LIKE", "BP.*"]
+    ],
+    "container": {
+        "docker": {
+            "parameters": [
+                {
+                    "key": "volume-driver",
+                    "value": "rexray"
+                },
+                {
+                    "key": "volume",
+                    "value": "@GROUP@_@ENV@_@APP@@APPSUB@_@VOLID@:@CONT_PATH@"
+                },
+                {
+                    "key": "log-opt",
+                    "value": "max-size=250m"
+                },
+                {
+                    "key": "log-opt",
+                    "value": "max-file=4"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,33 @@
+.button-panel button {
+    outline: none;
+}
+
+.btn {
+    background-color:transparent;
+    border-bottom-color: #f5f5f5;
+}
+
+.datatable-header {
+    display: block;
+    overflow: hidden;
+}
+
+.datatable-header.datatable-header-inner{
+    align-items: stretch;
+    -webkit-align-items: stretch;
+}
+
+td.highlight {
+    background-color: whitesmoke !important;
+}
+
+.datatable.scroll-vertical {
+    height: 70vh;
+}
+
+.selected-column {
+    background: #FFF;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+}

@@ -1,0 +1,54 @@
+<ngx-datatable *ngIf="summary" #testTable
+               class="material fullscreen tableStyle"
+               [columnMode]="'force'"
+               [headerHeight]="50"
+               [footerHeight]="0"
+               [rowHeight]="50"
+               [scrollbarV]="true"
+               [scrollbarH]="true"
+               [rows]="summary?.tests"
+               [limit]="0">
+  <ngx-datatable-row-detail [rowHeight]="300" #myDetailRow>
+    <template let-row="row" ngx-datatable-row-detail-template >
+      <div class="results-row">
+        <div class="panel panel-default">
+          <div class="panel-heading"><a (click)="mode='stats'">Stats</a>  Recent Executions:<span *ngFor="let result of row.executionResults"><a (click)="mode='logs'; selectLogs(row, result)">{{result.finished}}</a>  &nbsp;|&nbsp; </span> </div>
+          <div class="panel-body">
+            <table *ngIf="mode == 'logs'">
+                <tr  *ngFor="let log of row.result">
+                  [{{log.time}}]: {{log.step}}: {{log.message}}
+                </tr>
+            </table>
+            <br><br>
+            <table *ngIf="mode != 'logs'">
+              <thead>
+                <th>Step</th>
+                <th>Pass</th>
+                <th>Fail</th>
+              </thead>
+              <tfoot>
+                <tr *ngFor="let step of row.steps">
+                  <td>{{step}}</td>
+                  <td>{{row.failureStats[step].successes}}</td>
+                  <td>{{row.failureStats[step].failures}}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </template>
+  </ngx-datatable-row-detail>
+  <!-- Column Templates -->
+  <ngx-datatable-column [width]="50">
+    <template let-row="row" ngx-datatable-cell-template>
+      <a href='#' (click)="toggleExpandLogs(row)">Logs</a>
+      <a *ngIf="!modeAuto" href='#' (click)="executeTest(row.name)">Trigger</a>
+    </template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Name" width="300" [canAutoResize]="true" prop="name"></ngx-datatable-column>
+  <ngx-datatable-column name="Last Error" [canAutoResize]="true" width="300" prop="lastErrorMessage"></ngx-datatable-column>
+  <ngx-datatable-column name="Total Executions" width="80" prop="totalExecutions"></ngx-datatable-column>
+  <ngx-datatable-column name="Total Errors" width="80" prop="totalErrors"></ngx-datatable-column>
+  <ngx-datatable-column name="Status" prop="lastStatus" width="80"></ngx-datatable-column>
+</ngx-datatable>

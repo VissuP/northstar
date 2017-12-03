@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="https://codemirror.net/theme/monokai.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/material.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/solarized.css">
+<span defaultOverlayTarget></span>
+
+
+<alerts [message]="alert"></alerts>
+<div class="pages" *ngIf="notebook">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!--
+                TODO: Icon bars have something to do with the control of the menu on mobile devices.
+                Check this when we go to fix the menu.
+            -->
+            <div class="navbar-header">
+                <h4>
+                    <inline-edit [(value)]="notebook.name" *ngIf="notebook.canWrite()"></inline-edit>
+                    <div *ngIf="!notebook.canWrite()">{{notebook.name}}</div>
+                </h4>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <div class="nav navbar-nav" *ngIf="notebook.canWrite()">
+                        <li class="dropdown">
+                            <button type="button" class="btn btn-link dropdown-toggle fa fa-plus" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" tooltip="Insert" data-submenu [disabled]="running"></button>
+                            <ul class="dropdown-menu">
+                                <li *ngFor="let language of languages">
+                                    <a tabindex="0" (click)="notebook.newCell(language.language)">{{language.language}}</a>
+                                </li>
+                                <li class="divider dropdown-divider"></li>
+
+                                <!--
+                                 TODO: We should make this a submenu. E.g., "templates -> "
+                                -->
+                                <li *ngFor="let template of templates">
+                                    <a tabindex="0" (click)="addDecodedTemplate(template)">{{template.getName()}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-trash"
+                                    (click)="notebook.removeCell(activeCell)"
+                                    tooltip="Delete" [disabled]="!activeCell || running"></button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-arrow-up" (click)="moveCellUp(activeCell)"
+                                    tooltip="Move Up" [disabled]="!activeCell"></button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-arrow-down"
+                                    (click)="moveCellDown(activeCell)"
+                                    tooltip="Move Down" [disabled]="!activeCell"></button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-save" (click)="saveNotebook()"
+                                    tooltip="Save" [disabled]="running"></button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-download" tooltip="Export"
+                                    (click)="downloadNotebook(this)" [disabled]="running"></button>
+                        </li>
+                    </div>
+                    <div class="nav navbar-nav" *ngIf="notebook.canExecute()">
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-step-forward"
+                                    (click)="executeCell(activeCell)"
+                                    tooltip="Execute" [disabled]="!activeCell || running"></button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link fa fa-forward" (click)="executeAll()"
+                                    tooltip="Execute All" [disabled]="notebook.isEmpty() || running"></button>
+                        </li>
+                        <li class="autoRefresh">
+                            <div> Auto Refresh
+                                <select (change)="setAutoRefresh($event.target.value)" tooltip="Refresh Interval"[disabled]="notebook.isEmpty()">
+                                    <option value="0">None</option>
+                                    <option value="15000">Every 15 Seconds</option>
+                                    <option value="60000">Every 1 Minute</option>
+                                    <option value="300000">Every 5 Minutes</option>
+                                    <option value="600000">Every 10 Minutes</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li class="autoRefresh" *ngIf="running">
+                            <div>  Last Execution: <time>{{lastRun}}</time> </div>
+                        </li>
+                    </div>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right" >
+                    <li *ngIf="notebook.isOwner()">
+                        <button type="button" class="btn btn-link fa fa-lock" tooltip="Permissions"
+                                (click)="configurePermissions()" [disabled]="!notebook.id"></button>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="cell-group">
+        <div class="cell-item">
+            <div *ngFor="let cell of notebook.cells">
+                <div [ngClass]="{'activeCell': activeCell?.id == cell.id}">
+                    <div *ngIf="languageService.configs.get(cell.language).isCode()">
+                        <code-cell [cell]="cell" [activeCell]="cell.activeCell" (click)="setActiveCell(cell)"
+                                   [config]="languageService.configs.get(cell.language)"
+                                   [icon]="'bar-graph'"
+                                   [readOnly]="!notebook.canWrite()"></code-cell>
+                    </div>
+                    <div *ngIf="languageService.configs.get(cell.language).isStatic()">
+                        <static-cell [cell]="cell" [activeCell]="cell.activeCell" (click)="setActiveCell(cell)"
+                                     [config]="languageService.configs.get(cell.language)"
+                                     [readOnly]="!notebook.canWrite()"></static-cell>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+

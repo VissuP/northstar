@@ -1,0 +1,6 @@
+FROM          BASE_REGISTRY_URI/dkt-busybox-base
+MAINTAINER    Atul Gupta <atul.gupta@verizon.com>
+
+ADD logger    /usr/local/bin/
+
+

@@ -1,0 +1,23 @@
+<alerts [message]="alert"></alerts>
+<div class="pages pages-margin" xmlns="http://www.w3.org/1999/html">
+    <h4 class="title">Portfolios</h4>
+    <p>View your portfolios.</p>
+
+    <ngx-datatable *ngIf="portfolios" class='material' [rows]='portfolios' [columnMode]='force' [headerHeight]="50" [footerHeight]="50" [rowHeight]="auto" [scrollbarH]="true" [limit]="8">
+        <ngx-datatable-column name="Name" [width]="200">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['name']}}
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="CreatedOn" [width]="350">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row['creationDate']}}
+            </template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Actions" [width]="300">
+            <template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <button class="btn btn-link text-align:left" (click)="loadPortfolio(row.name)">Open</button>
+            </template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

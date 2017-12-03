@@ -1,0 +1,30 @@
+{
+  "container": {
+    "docker": {
+      "portMappings": [{
+        "containerPort": @OBJECT_PORT@,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 3,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "OBJECT_PORT": "@OBJECT_PORT@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+    "OBJECT_BLOB_STORAGE_USER_ID": "@OBJECT_BLOB_STORAGE_USER_ID@",
+    "OBJECT_BLOB_STORAGE_USER_SECRET": "@OBJECT_BLOB_STORAGE_USER_SECRET@",
+    "BLOB_STORAGE_HOST_AND_PORT": "@BLOB_STORAGE_HOST_AND_PORT@",
+    "ENABLE_DEBUG": "@ENABLE_DEBUG@"
+  }
+}

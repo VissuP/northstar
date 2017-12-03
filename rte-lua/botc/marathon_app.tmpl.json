@@ -1,0 +1,36 @@
+{
+  "container": {
+      "type": "DOCKER",
+      "docker": {
+        "portMappings": [{
+            "containerPort": 8989,
+            "hostPort": 0,
+            "servicePort": 0,
+            "protocol": "tcp"
+        }]
+    }
+  },
+  "healthChecks": [{
+      "protocol": "HTTP",
+      "path": "/management/health",
+      "gracePeriodSeconds": 3,
+      "intervalSeconds": 10,
+      "portIndex": 0,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 3
+  }],
+  "env": {
+      "MON_GROUP": "@GROUP@",
+      "MON_APP": "@APP@",
+      "MON_LOGLEVEL": "5",
+      "MON_CONTACT": "@CONTACT@",
+      "ENABLE_DEBUG": "@ENABLE_DEBUG@",
+      "KAFKA_MNGR_HOST_PORT":"@KAFKA_MNGR_HOST_PORT@",
+      "MARATHON_BASE_URL": "@MARATHON_BASE_URL@",
+      "MARATHON_USERNAME": "@MARATHON_USERNAME@",
+      "MARATHON_PASSWORD": "@MARATHON_PASSWORD@",
+      "MARATHON_AUTH_TYPE": "@MARATHON_AUTH_TYPE@",
+      "MARATHON_AUTH_URL": "@MARATHON_AUTH_URL@",
+      "TLS_SKIP_VERIFICATION": "@TLS_SKIP_VERIFICATION@"
+  }
+}

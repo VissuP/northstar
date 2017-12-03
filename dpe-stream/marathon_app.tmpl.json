@@ -1,0 +1,58 @@
+{
+  "args": ["/usr/local/bin/dpe-stream master"],
+  "container": {
+    "docker": {
+      "portMappings": [{
+        "containerPort": @DPE_STREAM_PORT@,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 1000,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "ENV": "@ENV@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+    "DATA_HOST_PORT": "@DATA_HOST_PORT@",
+    "OBJECT_HOST_PORT": "@OBJECT_HOST_PORT@",
+    "ZOOKEEPER_HOST_PORT": "@ZOOKEEPER_HOST_PORT@",
+    "KAFKA_BROKERS_HOST_PORT": "@KAFKA_BROKERS_HOST_PORT@",
+    "MESOS_ZK_HOST_PORT": "@MESOS_ZK_HOST_PORT@",
+    "DPE_SPARK_HOST_PORT": "@DPE_SPARK_HOST_PORT@",
+    "DPE_STREAM_PORT": "@DPE_STREAM_PORT@",
+    "NORTHSTARAPI_HOST_PORT": "@NORTHSTARAPI_HOST_PORT@",
+    "REDIS_HOST_PORT": "@REDIS_HOST_PORT@",
+    "RTE_PORT": "@DPE_STREAM_PORT@",
+    "ENABLE_DEBUG": "@ENABLE_DEBUG@",
+    "NUM_WORKERS": "@NUM_WORKERS@",
+    "NOTIFICATION_LIBRARY_VERSION": "@NOTIFICATION_LIBRARY_VERSION@",
+    "NOTIFICATION_KAFKA_BROKERS_HOST_PORT": "@KAFKA_BROKERS_HOST_PORT@",
+    "CLIENT_ID": "@CLIENT_ID@",
+    "CLIENT_SECRET": "@CLIENT_SECRET@",
+    "MARATHON_BASE_URL": "@MARATHON_BASE_URL@",
+    "MARATHON_USERNAME": "@MARATHON_USERNAME@",
+    "MARATHON_PASSWORD": "@MARATHON_PASSWORD@",
+    "MARATHON_AUTH_TYPE": "@MARATHON_AUTH_TYPE@",
+    "MARATHON_AUTH_URL": "@MARATHON_AUTH_URL@",
+    "TLS_SKIP_VERIFICATION": "@TLS_SKIP_VERIFICATION@",
+    "ENABLE_HTTP": "@ENABLE_HTTP@",
+    "ENABLE_NSQL": "@ENABLE_NSQL@",
+    "ENABLE_NSOUTPUT": "@ENABLE_NSOUTPUT@",
+    "ENABLE_NSFTP": "@ENABLE_NSFTP@",
+    "ENABLE_NSSFTP": "@ENABLE_NSSFTP@",
+    "ENABLE_NSOBJECT": "@ENABLE_NSOBJECT@",
+    "ENABLE_NSKV": "@ENABLE_NSKV@",
+    "ENABLE_TS": "@ENABLE_TS@",
+    "ENABLE_TS_NOTIFICATION": "@ENABLE_TS_NOTIFICATION@"
+  }
+}

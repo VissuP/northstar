@@ -1,0 +1,13 @@
+{
+  "constraints": [
+    ["EXTNETNAME", "LIKE", "@FE_EXTNETNAME@"]],
+  "env": {
+    "EXTADDR":"@FE_IPS@",
+    "SERVICENAME": "@FE_SERVICENAME@",
+    "SERVERPORT":":@FE_SERVERPORT@",
+    "EXTNETNAME":"@FE_EXTNETNAME@"
+  },
+  "acceptedResourceRoles": [
+    "slave_public"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "ts.transformation": [{"Methods":["GET", "POST", "PUT", "PATCH", "DELETE"], "Paths":["/api/ns/v1/transformations", "/api/ns/v1/executions/transformation", "/api/ns/v1/jobs"]}],
+  "ts.transformation.ro": [{"Methods":["GET"], "Paths":["/api/ns/v1/transformations"]}],
+  "ts.notebook": [{"Methods":["GET", "POST", "PUT", "PATCH", "DELETE"], "Paths":["/api/ns/v1/notebooks", "/api/ns/v1/executions/cell", "/api/ns/v1/templates"]}],
+  "ts.notebook.ro": [{"Methods":["GET"], "Paths":["/api/ns/v1/notebooks"]}],
+  "ts.nsobject.ro": [{"Methods":["GET"], "Paths":["/api/ns/v1/objects"]}],
+  "ts.execution":[{"Methods":["GET", "POST", "PUT", "DELETE"], "Paths":["/api/ns/v1/executions"]}],
+  "ts.stream":[{"Methods":["GET", "DELETE"], "Paths":["/api/ns/v1/streams"]}],
+  "ts.user": [{"Methods":["POST"], "Paths":["/api/ns/v1/users"]}]
+}
+

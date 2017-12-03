@@ -1,0 +1,13 @@
+<div class="row alerts-container">
+    <!--Note: Bootstrap Height is 52px on both chrome "mobile" view and normal view. Not sure where it's defined -->
+    <div class="col-xs-12 alert-spacer">
+        <div *ngIf="message">
+            <div role="alert" class="alert alert-link alert-{{message.type}}">
+                <button type="button" (click)="closeAlert(i)" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                {{message.message}} <a *ngIf="message.href" href="{{message.href}}">details</a>
+            </div>
+
+        </div>
+    </div>
+</div>

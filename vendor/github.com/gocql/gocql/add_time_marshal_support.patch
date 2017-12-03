@@ -1,0 +1,203 @@
+From 0801569efe2de721ee8f28295a16afa652b3c391 Mon Sep 17 00:00:00 2001
+From: Sandeep Yarabarla <sandeep.yarabarla@verizon.com>
+Date: Fri, 31 Mar 2017 14:47:36 -0700
+Subject: [PATCH] Added marshal/unmarshal support for time datatype
+
+---
+ marshal.go | 133 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 129 insertions(+), 4 deletions(-)
+
+diff --git a/marshal.go b/marshal.go
+index 9effdee..e534635 100644
+--- a/marshal.go
++++ b/marshal.go
+@@ -13,6 +13,7 @@ import (
+ 	"math/big"
+ 	"net"
+ 	"reflect"
++	"regexp"
+ 	"strconv"
+ 	"strings"
+ 	"time"
+@@ -96,6 +97,8 @@ func Marshal(info TypeInfo, value interface{}) ([]byte, error) {
+ 		return marshalTuple(info, value)
+ 	case TypeUDT:
+ 		return marshalUDT(info, value)
++	case TypeTime:
++		return marshalTime(info, value)
+ 	case TypeDate:
+ 		return marshalDate(info, value)
+ 	}
+@@ -157,6 +160,8 @@ func Unmarshal(info TypeInfo, data []byte, value interface{}) error {
+ 		return unmarshalTuple(info, data, value)
+ 	case TypeUDT:
+ 		return unmarshalUDT(info, data, value)
++	case TypeTime:
++		return unmarshalTime(info, data, value)
+ 	case TypeDate:
+ 		return unmarshalDate(info, data, value)
+ 	}
+@@ -1120,6 +1125,126 @@ func unmarshalTimestamp(info TypeInfo, data []byte, value interface{}) error {
+ 	return unmarshalErrorf("can not unmarshal %s into %T", info, value)
+ }
+ 
++func convertedTimeValue(d int64, m int64) int64 {
++	max := int64(math.MaxInt64)
++	over := max / m
++	if d > over {
++		return math.MaxInt64
++	}
++	if d < -over {
++		return math.MinInt64
++	}
++	return d * m
++}
++
++func marshalTime(info TypeInfo, value interface{}) ([]byte, error) {
++	switch v := value.(type) {
++	case Marshaler:
++		return v.MarshalCQL(info)
++	case int64:
++		return encBigInt(v), nil
++	case string:
++		pattern := "^-?\\d+$"
++		r, _ := regexp.Compile(pattern)
++		matched := r.MatchString(v)
++		if matched {
++			vInt, _ := strconv.ParseInt(v, 10, 64)
++			if vInt < 0 || vInt >= convertedTimeValue(1, int64(86400*1e9)) {
++				return nil, marshalErrorf("can not marshal %T into %s", value, info)
++			}
++			return encBigInt(vInt), nil
++		}
++		var second int64
++		var a_nanos int64 = 0
++		var err error
++		var formatError string = "Timestamp format must be hh:mm:ss[.fffffffff]"
++		var zeros string = "000000000"
++		s := strings.Trim(v, " ")
++		if s == "" {
++			return nil, marshalErrorf(formatError)
++		}
++		firstColon := strings.Index(s, ":")
++		secondColon := strings.LastIndex(s, ":")
++		colons := strings.Count(s, ":")
++		period := strings.Index(s, ".")
++		length := len(s)
++		if colons != 2 {
++			return nil, marshalErrorf(formatError)
++		}
++		hour, _ := strconv.ParseInt(s[0:firstColon], 10, 64)
++		if hour < 0 || hour > 24 {
++			return nil, marshalErrorf("Hours out of bounds")
++		}
++		minute, _ := strconv.ParseInt(s[firstColon+1:secondColon], 10, 64)
++		if minute < 0 || minute >= 60 {
++			return nil, marshalErrorf("Minutes out of bounds")
++		}
++		if period > 0 && period < length-1 {
++			second, _ = strconv.ParseInt(s[secondColon+1:period], 10, 64)
++			if second < 0 || second >= 60 {
++				return nil, marshalErrorf("Seconds out of bounds")
++			}
++			nanos_s := s[period+1:]
++			if len(nanos_s) > 9 {
++				return nil, marshalErrorf(formatError)
++			}
++			nanos_s = nanos_s + zeros[0:9-len(nanos_s)]
++			if a_nanos, err = strconv.ParseInt(nanos_s, 10, 64); err != nil {
++				return nil, marshalErrorf(formatError)
++			}
++		} else {
++			second, _ = strconv.ParseInt(s[secondColon+1:], 10, 64)
++			if second < 0 || second >= 60 {
++				return nil, marshalErrorf("Seconds out of bounds")
++			}
++		}
++		rawTime := convertedTimeValue(hour, int64(3600*1e9))
++		rawTime += convertedTimeValue(minute, int64(60*1e9))
++		rawTime += convertedTimeValue(second, int64(1e9))
++		rawTime += a_nanos
++		return encBigInt(rawTime), nil
++	}
++
++	rv := reflect.ValueOf(value)
++	switch rv.Type().Kind() {
++	case reflect.Int64:
++		return encBigInt(rv.Int()), nil
++	}
++	return nil, marshalErrorf("can not marshal %T into %s", value, info)
++}
++
++func unmarshalTime(info TypeInfo, data []byte, value interface{}) error {
++	switch v := value.(type) {
++	case Unmarshaler:
++		return v.UnmarshalCQL(info, data)
++	case *int64:
++		*v = decBigInt(data)
++		return nil
++	case *string:
++		rawTime := decBigInt(data)
++		nanos := rawTime % 1e9
++		seconds := rawTime / 1e9
++		minutes := seconds / 60
++		seconds = seconds % 60
++		hours := minutes / 60
++		minutes = minutes % 60
++		*v = fmt.Sprintf("%02d:%02d:%02d.%09d", int(hours), int(minutes), int(seconds), int(nanos))
++		return nil
++	}
++
++	rv := reflect.ValueOf(value)
++	if rv.Kind() != reflect.Ptr {
++		return unmarshalErrorf("can not unmarshal into non-pointer %T", value)
++	}
++	rv = rv.Elem()
++	switch rv.Type().Kind() {
++	case reflect.Int64:
++		rv.SetInt(decBigInt(data))
++		return nil
++	}
++	return unmarshalErrorf("can not unmarshal %s into %T", info, value)
++}
++
+ func marshalDate(info TypeInfo, value interface{}) ([]byte, error) {
+ 	var timestamp int64
+ 	switch v := value.(type) {
+@@ -1127,21 +1252,21 @@ func marshalDate(info TypeInfo, value interface{}) ([]byte, error) {
+ 		return v.MarshalCQL(info)
+ 	case int64:
+ 		timestamp = v
+-		x := timestamp/86400000 + int64(1 << 31)
++		x := timestamp/86400000 + int64(1<<31)
+ 		return encInt(int32(x)), nil
+ 	case time.Time:
+ 		if v.IsZero() {
+ 			return []byte{}, nil
+ 		}
+ 		timestamp = int64(v.UTC().Unix()*1e3) + int64(v.UTC().Nanosecond()/1e6)
+-		x := timestamp/86400000 + int64(1 << 31)
++		x := timestamp/86400000 + int64(1<<31)
+ 		return encInt(int32(x)), nil
+ 	case *time.Time:
+ 		if v.IsZero() {
+ 			return []byte{}, nil
+ 		}
+ 		timestamp = int64(v.UTC().Unix()*1e3) + int64(v.UTC().Nanosecond()/1e6)
+-		x := timestamp/86400000 + int64(1 << 31)
++		x := timestamp/86400000 + int64(1<<31)
+ 		return encInt(int32(x)), nil
+ 	case string:
+ 		if v == "" {
+@@ -1152,7 +1277,7 @@ func marshalDate(info TypeInfo, value interface{}) ([]byte, error) {
+ 			return nil, marshalErrorf("can not marshal %T into %s, date layout must be '2006-01-02'", value, info)
+ 		}
+ 		timestamp = int64(t.UTC().Unix()*1e3) + int64(t.UTC().Nanosecond()/1e6)
+-		x := timestamp/86400000 + int64(1 << 31)
++		x := timestamp/86400000 + int64(1<<31)
+ 		return encInt(int32(x)), nil
+ 	}
+ 
+-- 
+2.10.1 (Apple Git-78)
+

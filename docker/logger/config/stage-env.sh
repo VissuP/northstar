@@ -1,0 +1,1 @@
+DKT_BUILD_ENV=stage

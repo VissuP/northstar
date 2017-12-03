@@ -1,0 +1,62 @@
+{
+  "id": "@APPID@",
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": true,
+      "image": "@MARATHON_IMAGE@",
+      "network": "BRIDGE",
+      "portMappings": [{
+        "containerPort": 8080,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }],
+      "parameters": [
+        { "key": "log-opt", "value": "max-size=50m" },
+        { "key": "log-opt", "value": "max-file=2" }
+      ]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 3,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "MON_GROUP": "@GROUP@",
+    "MON_APP": "@APP@",
+    "MON_LOGLEVEL": "5",
+    "MON_CONTACT": "@CONTACT@",
+    "ADVERTISED_PORT":"8080",
+
+    "KAFKA_BROKERS_HOST_PORT": "@KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+
+    "CONFIGURED_ENVIRONMENT": "@DATACENTER@",
+    "ENABLE_DEBUG": "true",
+    "CONFIG_FILE": "/nssim/config.json",
+    "SIMULATOR_MODE": "auto",
+    "SIMULATOR_GROUPS":"@NSSIM_TEST_GROUPS@",
+    "THINGSPACE_PROTOCOL": "http",
+    "THINGSPACE_USER_HOST_PORT": "@THINGSPACE_USER_HOST_PORT@",
+    "THINGSPACE_SOUTH_HOST_PORT": "@THINGSPACE_SOUTH_HOST_PORT@",
+    "THINGSPACE_AUTH_HOST_PORT": "@THINGSPACE_AUTH_HOST_PORT@",
+    "NORTHSTAR_PROTOCOL":"http",
+    "NORTHSTARAPI_HOST_PORT":"@NORTHSTARAPI_HOST_PORT@",
+    "DAKOTA_PROTOCOL":"http",
+    "UTPROVISION_HOST_PORT":"@UTPROVISION_HOST_PORT@",
+    "HTTP_TIMEOUT":"5",
+    "CASSANDRA_NATIVE_TRANSPORT_PORT": "@CASSANDRA_NATIVE_TRANSPORT_PORT@",
+    "CASSANDRA_HOST": "@CASSANDRA_HOST@",
+    "PROCESSING_HOST_PORT":"@PROCESSING_HOST_PORT@",
+    "DATA_HOST_PORT":"@DATA_HOST_PORT@",
+    "ITERATION_DELAY_IN_SEC":"@ITERATION_DELAY_IN_SEC@"
+  }
+}

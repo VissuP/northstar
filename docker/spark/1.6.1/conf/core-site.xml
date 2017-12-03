@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<property>
+  <name>fs.s3a.connection.ssl.enabled</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>fs.s3a.fast.upload</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>fs.s3a.endpoint</name>
+  <value>10.17.53.1,10.15.53.1,10.17.57.1,10.20.45.1,10.15.25.1,10.20.53.1,10.20.37.1,10.15.29.1,10.20.41.1,10.17.21.1,10.17.45.1,10.17.33.1,10.18.49.1,10.17.29.1,10.20.21.1,10.15.45.1,10.17.41.1,10.18.21.1,10.15.37.1,10.20.33.1,10.15.21.1,10.18.41.1,10.15.33.1,10.17.49.1,10.15.41.1,10.18.33.1,10.18.53.1,10.18.57.1,10.17.37.1,10.20.25.1,10.20.29.1,10.18.45.1,10.18.25.1,10.15.57.1,10.18.37.1,10.17.25.1,10.20.57.1,10.15.49.1,10.18.29.1,10.20.49.1</value>
+</property>
+
+<property>
+  <name>fs.s3a.impl</name>
+  <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+</property>
+
+<property>
+  <name>fs.s3a.connection.establish.timeout</name>
+  <value>50000</value>
+</property>
+
+<property>
+  <name>fs.s3a.connection.timeout</name>
+  <value>50000</value>
+</property>
+
+<property>
+  <name>fs.viprfs.impl</name>
+  <value>com.emc.hadoop.fs.vipr.ViPRFileSystem</value>
+</property>
+
+<property>
+  <name>fs.AbstractFileSystem.viprfs.impl</name>
+  <value>com.emc.hadoop.fs.vipr.ViPRAbstractFileSystem</value>
+</property>
+
+<property>
+  <name>fs.vipr.installations</name>
+  <value>storage</value>
+</property>
+
+<property>
+  <name>fs.vipr.installation.storage.hosts</name>
+  <value>10.17.53.1,10.15.53.1,10.17.57.1,10.20.45.1,10.15.25.1,10.20.53.1,10.20.37.1,10.15.29.1,10.20.41.1,10.17.21.1,10.17.45.1,10.17.33.1,10.18.49.1,10.17.29.1,10.20.21.1,10.15.45.1,10.17.41.1,10.18.21.1,10.15.37.1,10.20.33.1,10.15.21.1,10.18.41.1,10.15.33.1,10.17.49.1,10.15.41.1,10.18.33.1,10.18.53.1,10.18.57.1,10.17.37.1,10.20.25.1,10.20.29.1,10.18.45.1,10.18.25.1,10.15.57.1,10.18.37.1,10.17.25.1,10.20.57.1,10.15.49.1,10.18.29.1,10.20.49.1</value>
+</property>
+
+<property>
+  <name>fs.vipr.installation.storage.hosts.resolution</name>
+  <value>dynamic</value>
+</property>
+
+<property>
+ <name>fs.permissions.umask-mode</name>
+ <value>022</value>
+</property>
+
+<property>
+  <name>fs.viprfs.auth.anonymous_translation</name>
+  <value>LOCAL_USER</value>
+</property>
+
+<property>
+ <name>fs.viprfs.auth.identity_translation</name>
+ <value>NONE</value>
+</property>
+</configuration>

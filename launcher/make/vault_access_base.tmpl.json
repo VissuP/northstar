@@ -1,0 +1,7 @@
+{
+    "info": [{
+	"dc": "@APP_DC@",
+	"app_id": "@APP_ID@",
+	@VAULT_SECRET@
+   }]
+}

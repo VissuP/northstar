@@ -1,0 +1,7 @@
+.alerts-container .alert:last-child {
+    margin-bottom: 0;
+}
+
+.alert-spacer {
+    height:52px;
+}

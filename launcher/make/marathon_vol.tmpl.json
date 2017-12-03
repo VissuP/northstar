@@ -1,0 +1,11 @@
+{
+  "container": {
+    "volumes": [
+      {
+        "containerPath": "@CONT_PATH@",
+        "hostPath": "@VOL_PATH@",
+        "mode": "@MODE@"
+      }
+    ]
+    }
+}

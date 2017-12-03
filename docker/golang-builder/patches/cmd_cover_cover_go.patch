@@ -1,0 +1,63 @@
+--- a/cmd/cover/cover.go
++++ b/cmd/cover/cover.go
+@@ -33,6 +33,9 @@ Open a web browser displaying annotated
+ Write out an HTML file instead of launching a web browser:
+ 	go tool cover -html=c.out -o coverage.html
+ 
++Write out a Clover-format XML representation of coverage profile:
++	go tool cover -xml=c.out -o coverage.xml
++
+ Display coverage percentages to stdout for each function:
+ 	go tool cover -func=c.out
+ 
+@@ -45,19 +48,20 @@ func usage() {
+ 	fmt.Fprintln(os.Stderr, usageMessage)
+ 	fmt.Fprintln(os.Stderr, "Flags:")
+ 	flag.PrintDefaults()
+-	fmt.Fprintln(os.Stderr, "\n  Only one of -html, -func, or -mode may be set.")
++	fmt.Fprintln(os.Stderr, "\n  Only one of -html, -xml, -func, or -mode may be set.")
+ 	os.Exit(2)
+ }
+ 
+ var (
+-	mode    = flag.String("mode", "", "coverage mode: set, count, atomic")
++	mode    = flag.String("mode", "", "coverage mode: set, count, or atomic")
+ 	varVar  = flag.String("var", "GoCover", "name of coverage variable to generate")
+ 	output  = flag.String("o", "", "file for output; default: stdout")
+ 	htmlOut = flag.String("html", "", "generate HTML representation of coverage profile")
++       xmlOut  = flag.String("xml", "", "generate Clover-format XML representation of coverage profile")
+	funcOut = flag.String("func", "", "output coverage profile information for each function")
+ )
+ 
+-var profile string // The profile to read; the value of -html or -func
++var profile string // The profile to read; the value of -html, -xml, or -func
+
+ var counterStmt func(*File, ast.Expr) ast.Stmt
+ 
+@@ -88,9 +92,11 @@ func main() {
+ 		return
+ 	}
+ 
+-	// Output HTML or function coverage information.
++	// Output HTML, XML, or function coverage information.
+ 	if *htmlOut != "" {
+ 		err = htmlOutput(profile, *output)
++	} else if *xmlOut != "" {
++		err = xmlOutput(profile, *output)
+ 	} else {
+ 		err = funcOutput(profile, *output)
+ 	}
+@@ -104,6 +110,12 @@ func main() {
+ // parseFlags sets the profile and counterStmt globals and performs validations.
+ func parseFlags() error {
+ 	profile = *htmlOut
++	if *xmlOut != "" {
++		if profile != "" {
++			return fmt.Errorf("too many options")
++		}
++		profile = *xmlOut
++	}
+ 	if *funcOut != "" {
+ 		if profile != "" {
+ 			return fmt.Errorf("too many options")
+

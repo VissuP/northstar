@@ -1,0 +1,9 @@
+FROM          ubuntu:utopic
+MAINTAINER    Atul Gupta <atul.gupta@verizon.com>
+
+ADD logger    /usr/local/bin/
+RUN apt-get update && \
+    apt-get install -y wget && \
+    apt-get install -y curl && \
+    apt-get install -y bash && \
+    apt-get clean

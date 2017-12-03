@@ -1,0 +1,9 @@
+.bar-graph {
+    background: url('../img/languages/bar_graph.svg');
+    background-repeat: no-repeat; 
+    height: 16px;
+    width: 30px;
+    float: left;
+}
+
+.mt2 {margin-top: 2px}

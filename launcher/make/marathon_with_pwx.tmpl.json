@@ -1,0 +1,31 @@
+{
+    "constraints": [
+        [
+        "PXCLUSTER",
+        "CLUSTER",
+        "PWX1"
+        ]
+    ],
+    "container": {
+        "docker": {
+            "parameters": [
+                {
+                    "key": "volume-driver",
+                    "value": "pxd"
+                },
+                {
+                    "key": "volume",
+                    "value": "@VOL_PATH@:@CONT_PATH@"
+                },
+                { 
+                    "key": "log-opt", 
+                    "value": "max-size=250m" 
+                },
+                { 
+                    "key": "log-opt", 
+                    "value": "max-file=4" 
+                }
+            ]
+        }
+    }
+}

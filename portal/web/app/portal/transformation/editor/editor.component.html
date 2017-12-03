@@ -1,0 +1,224 @@
+<link rel="stylesheet" href="/northstar/app/portal/transformation/editor/codemirror.css"/>
+<link rel="stylesheet" href="https://codemirror.net/theme/monokai.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/material.css">
+<link rel="stylesheet" href="https://codemirror.net/theme/solarized.css">
+
+<!-- Transformation Form -->
+<div class="modal-dialog transformation-dialog">
+    <div class="modal-content">
+        <form #editorForm="ngForm">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4>Transformation</h4>
+                <alerts [message]="alert"></alerts>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body form-horizontal">
+                <!--
+                <div class="modal-header" *ngIf="scheduleChanged">
+                    <div class="alert">
+                        <strong>Warning:</strong> Schedule changed. Code may need to be adjusted.
+                    </div>
+                </div>
+                -->
+
+                <!-- Navigation Bar -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#general_{{id}}" data-toggle="tab">General</a></li>
+                    <li><a href="#schedule_{{id}}" data-toggle="tab">Schedule</a></li>
+                    <li><a href="#code_{{id}}" data-toggle="tab"
+                           (click)="activateCodeMirrorByID('code', codeConfig.codemirror)">Code</a></li>
+                    <li><a href="#test_{{id}}" data-toggle="tab"
+                           (click)="activateCodeMirrorByID('jsonCode', jsonConfig.codemirror)">Test</a></li>
+                </ul>
+
+                <div class="tab-content clearfix">
+                    <!-- General Tab Panel -->
+                    <div class="tab-pane active" id="general_{{id}}">
+                        <div class="container-fluid tab-pane-container">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-6"><label for="name">Name</label></div>
+                                    <div class="col-md-6"><label for="timeout">Timeout (s)</label></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input class="input-md" type="text" id="name" name="name"
+                                               [(ngModel)]="transformation.name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="input-md" type="number" id="timeout"
+                                               name="timeout" required
+                                               [(ngModel)]="transformation.timeout" min="1">
+                                    </div>
+                                </div>
+                                <div class="row row-padding">
+                                    <div class="col-md-6"><label for="description">Description</label></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <textarea class="textarea-lg" type="text" id="description"
+                                              name="description"
+                                              [(ngModel)]="transformation.description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Tab Panel -->
+                    <div class="tab-pane" id="schedule_{{id}}">
+                        <div class="container-fluid tab-pane-container">
+
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-6"><label for="executeOn">Execute On</label></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="select-md selectbox" [(ngModel)]="selectedCategory"
+                                                (change)="categoryChanged()" name="executeOn">
+                                            <option *ngFor="let category of categories" [ngValue]="category">
+                                                {{category.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row row-padding"></div>
+
+                                <div class="row" *ngIf="categorySelected()">
+                                    <div class="col-md-6"><label for="type">Type</label></div>
+                                    <div class="col-md-6" *ngIf="selectedCategoryOption"><label
+                                            for="field">Field</label></div>
+                                </div>
+
+                                <div class="row" *ngIf="categorySelected()">
+                                    <div class="col-md-6">
+                                        <select class="select-md selectbox" [(ngModel)]="selectedCategoryOption"
+                                                *ngIf="selectedCategory" (change)="categoryOptionsChanged()"
+                                                name="type">
+                                            <option [ngValue]="categoryOption"
+                                                    *ngFor="let categoryOption of categoryOptions"
+                                                    [hidden]="categoryOption.categoryId != selectedCategory.id">
+                                                {{categoryOption.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <select class="select-md selectbox" [(ngModel)]="selectedCategoryOptionField"
+                                                *ngIf="selectedCategoryOption" (change)="categoryOptionsFieldChanged()"
+                                                name="field">
+                                            <option *ngFor="let categoryOptionField of categoryOptionFields"
+                                                    [ngValue]="categoryOptionField"
+                                                    [hidden]="categoryOptionField.categoryOptionId != selectedCategoryOption.id">
+                                                {{categoryOptionField.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row row-padding"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6"><label for="description">Description</label></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="textarea-lg noborders" type="text" id="scheduleDescription"
+                                                  name="scheduleDescription" readonly="true" disabled="true">{{selectedCategory.description}}
+                                        </textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!--Schedule Form Ends-->
+                    </div>
+
+                    <!-- Code Tab Panel -->
+                    <div class="tab-pane" id="code_{{id}}">
+                        <div class="container-fluid tab-pane-container">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-6"><label for="language">Language</label></div>
+                                    <div class="col-md-6"><label for="mainFunction">Main Function</label></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="select-md selectbox" id="language"
+                                                [(ngModel)]="transformation.language"
+                                                (change)="languageChanged(transformation.language)" name="language">
+                                            <option *ngFor="let language of languages"
+                                                    [ngValue]="language.language"
+                                                    [selected]="language == transformation.language">{{language.language}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="input-md" type="text" id="mainFunction" name="mainFunction"
+                                               [(ngModel)]="transformation.entryPoint" required>
+                                    </div>
+                                </div>
+
+                                <div class="row row-padding"></div>
+                                <div class="row">
+                                    <div class="col-md-6"><label for="code">Code</label></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <codemirror [config]="codeConfig.editorConfig"
+                                                    [(ngModel)]="transformation.code.value" name="codeEditor"
+                                                    id="code"
+                                                    style="min-height: 100px; max-height: 100px; height: 200px; margin:3%"
+                                                    required></codemirror>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test Tab Panel -->
+                    <div class="tab-pane" id="test_{{id}}">
+                        <div class="container-fluid tab-pane-container">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-6"><label for="jsonCode">Input</label></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6" style="margin: 3%; overflow: auto; height: 300px">
+                                        <div>
+                                           <codemirror [(ngModel)]="jsonCode" [config]="jsonConfig.editorConfig"
+                                                        id="jsonCode"
+                                                        style="min-height: 100px; max-height: 100px; height: 100px"
+                                                        name="testEditor"></codemirror>
+                                        </div>
+                                        <br>
+                                        <button (click)="executeTransformation()">Test</button>
+                                        <output *ngIf="testResults" [outputJSON]="testResults"
+                                                style="height:100px;"></output>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" (click)="save()" [disabled]="!editorForm.form.valid">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-default" (click)="exit()">Cancel</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

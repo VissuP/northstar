@@ -1,0 +1,30 @@
+{
+  "container": {
+    "docker": {
+      "portMappings": [{
+        "containerPort": @CRON_PORT@,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 3,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "ENV": "@ENV@",
+    "CRON_PORT": "@CRON_PORT@",
+    "DATA_HOST_PORT": "@DATA_HOST_PORT@",
+    "PROCESSING_HOST_PORT": "@PROCESSING_HOST_PORT@",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+    "ENABLE_DEBUG": "@ENABLE_DEBUG@"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "mem": 4096.0,
+  "container": {
+    "docker": {
+      "portMappings": [{
+        "containerPort": @KAFKA_MNGR_PORT@,
+        "hostPort": 0,
+        "servicePort": 0,
+        "protocol": "tcp"
+      }]
+    }
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/management/health",
+    "gracePeriodSeconds": 3,
+    "intervalSeconds": 10,
+    "portIndex": 0,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }],
+  "env": {
+    "KAFKA_ZK_URL": "@KAFKA_ZK_URL@",
+    "KAFKA_BROKERS_HOST_PORT": "@KAFKA_BROKERS_HOST_PORT@",
+    "ZOOKEEPER_HOST_PORT": "@ZOOKEEPER_HOST_PORT@",
+    "KAFKA_MNGR_PORT": "@KAFKA_MNGR_PORT@",
+    "KAFKA_MNGR_ZK_TIMEOUT": "10000",
+    "LOGGER_KAFKA_BROKERS_HOST_PORT": "@LOGGER_KAFKA_BROKERS_HOST_PORT@",
+    "LOGGER_ZOOKEEPER_HOST_PORT": "@LOGGER_ZOOKEEPER_HOST_PORT@",
+    "ENABLE_DEBUG": "@ENABLE_DEBUG@"
+  }
+}

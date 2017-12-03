@@ -1,0 +1,1295 @@
+
+swagger: '2.0'
+info:
+  title: Northstar API
+  version: v1
+host: 198.159.134.39
+basePath: /api/ns/v1
+schemes:
+  - http
+  - https
+paths:
+  /transformations:
+    get:
+      summary: List Transformations
+      tags: 
+        - transformation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "The transformations belonging to the account."
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Transformation"
+    post:
+      summary: Create Transformation
+      tags: 
+        - transformation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Body
+          in: "body"
+          description: Transformation
+          required: true
+          schema: {
+            $ref: "#/definitions/Transformation"
+          }
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "The created transformation"
+          schema: {
+            $ref: "#/definitions/Transformation"
+          }
+    put:
+      summary: Update Transformation
+      tags: 
+        - transformation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "The updated transformation"
+          schema: {
+            $ref: "#/definitions/Transformation"
+          }
+  /transformations/{transformationID}:
+    get:
+      summary: "Get the specified transformation."
+      tags: 
+        - transformation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: transformationID
+          in: "path"
+          type: string
+          required: true
+          description: "The ID of the transformation"
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "The specified transformation"
+          schema: {
+            $ref: "#/definitions/Transformation"
+          }
+    delete:
+      summary: "Delete the specified transformation"
+      tags: 
+        - transformation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: transformationID
+          in: "path"
+          type: string
+          required: true
+          description: "The ID of the transformation"
+      responses:
+        '204':
+          description: "The transformation was deleted successfully"
+  /transformations/{transformationID}/results:
+    get:
+      summary: "Get the results of the specified transformation"
+      tags: 
+        - transformation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: transformationID
+          in: "path"
+          type: string
+          required: true
+          description: "The ID of the transformation"
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "The specified transformation"
+          schema:
+            type: array
+            items: 
+             $ref: "#/definitions/Output" 
+  /transformations/{transformationID}/schedule:
+    post:
+      summary: "Create a schedule."
+      tags: 
+        - transformation
+        - schedule
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Schedule
+          description: "Schedule to create"
+          in: "body"
+          required: true
+          schema: {
+            $ref: "#/definitions/Schedule" 
+          }
+        - name: transformationID
+          in: "path"
+          type: string
+          required: true
+          description: "The ID of the transformation"
+      responses:
+        '200':
+          description: The created schedule
+          schema: {
+            $ref: "#/definitions/Schedule" 
+          }
+    get:
+      summary: "Retrieve the specified schedule"
+      tags: 
+        - transformation
+        - schedule
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: transformationID
+          in: "path"
+          type: string
+          required: true
+          description: "The ID of the transformation"
+      responses:
+        '200':
+          description: "The specified schedule"
+          schema: {
+            $ref: "#/definitions/Schedule"
+          }
+    delete:
+      summary: "Delete the specified schedule"
+      tags: 
+        - transformation
+        - schedule
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: transformationID
+          in: "path"
+          type: string
+          required: true
+          description: "The ID of the transformation"
+      responses:
+        '204':
+          description: "The schedule was deleted successfully"
+  /executions/transformation:
+    post:
+      tags:
+        - execution
+        - transformation
+      deprecated: true
+      summary: "Execute the provided transformation"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: x-vz-callback-url
+          in: header
+          description: "Callback URL to trigger when the execution completes"
+          type: string
+        - name: Body
+          in: "body"
+          description: Cell to execute
+          required: true
+          schema:
+            $ref: "#/definitions/Transformation"
+      responses:
+       '200':
+          description: "The transformation being executed"
+          schema:
+            $ref: "#/definitions/Transformation"
+  /notebooks:
+    get:
+      tags:
+        - notebook
+      summary: "List notebooks belonging to this account"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The list of notebooks"
+          schema:
+            type: array
+            items: 
+             $ref: "#/definitions/Notebook" 
+    post:
+      tags:
+        - notebook
+      summary: "Create new notebook"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Body
+          in: "body"
+          description: Notebook to create
+          required: true
+          schema:
+            $ref: "#/definitions/Notebook"
+      responses:
+       '200':
+          description: "The created notebook"
+          schema:
+            $ref: "#/definitions/Notebook" 
+    put:
+      tags:
+        - notebook
+      summary: "Update an existing notebook"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Body
+          in: "body"
+          description: Notebook to update
+          required: true
+          schema:
+            $ref: "#/definitions/Notebook"
+      responses:
+       '200':
+          description: "The updated notebook"
+          schema:
+            $ref: "#/definitions/Notebook" 
+  /notebooks/{notebookID}:
+    get:
+      tags:
+        - notebook
+      summary: "Retrieve the specified notebook"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - in: "path"
+          name: notebookID
+          type: string
+          required: true
+          description: "The ID of the notebook"
+      responses:
+        '200':
+          description: "The specified notebook"
+          schema:
+            $ref: "#/definitions/Notebook" 
+    delete:
+      tags:
+        - notebook
+      summary: "Delete the specified notebook"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - in: "path"
+          name: notebookID
+          type: string
+          required: true
+          description: "The ID of the notebook"
+      responses:
+        '204':
+          description: "The notebook was deleted successfully"
+  /notebooks/{notebookID}/users:
+    get:
+      tags:
+        - notebook
+      summary: "List the users and their permissions on the notebook"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: notebookID
+          in: path
+          description: ID of the notebook
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The list of permissions for the notebook"
+          schema:
+            type: array
+            items: 
+             $ref: "#/definitions/User"
+    put:
+      tags:
+        - notebook
+      summary: "Update the list of users with permissions on the notebook"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: notebookID
+          in: path
+          description: ID of the notebook
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: "Users and permissions for the notebook"
+          required: true
+          schema:
+            type: array
+            items: 
+             $ref: "#/definitions/User"
+      responses:
+        '204':
+          description: "The list of permissions for the notebook"
+          schema:
+            type: array
+            items: 
+             $ref: "#/definitions/User"
+      
+  /notebooks/{notebookID}/cells/{cellID}/actions/execute:
+    post:
+      tags:
+         - notebook
+      deprecated: true
+      summary: "Execute the specified cell with notebook permissions"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: x-vz-callback-url
+          in: header
+          description: "Callback URL to trigger when the execution completes"
+          type: string
+        - name: notebookID
+          in: path
+          description: "ID of the notebook"
+          required: true
+          type: string
+        - name: cellID
+          in: path
+          description: "ID of the cell"
+          required: true
+          type: string
+        - name: Body
+          in: "body"
+          description: Cell to execute
+          required: true
+          schema:
+            $ref: "#/definitions/Cell"
+      responses:
+         '200':
+          description: "The cell being executed"
+          schema: 
+            $ref: "#/definitions/Cell"
+  /executions/cell:
+    post:
+      summary: "Execute the provided cell"
+      tags:
+        - execution
+        - notebook
+      deprecated: true
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Body
+          in: "body"
+          description: Cell to execute
+          required: true
+          schema:
+            $ref: "#/definitions/Cell"
+        - name: x-vz-callback-url
+          in: header
+          description: "Callback URL to trigger when the execution completes"
+          type: string
+      responses:
+        '200':
+          description: "The cell being executed"
+          schema:
+            $ref: "#/definitions/Cell"
+  /executions:
+    get:
+      tags:
+        - execution
+      summary: List Executions
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: The executions belonging to the account.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Execution'
+  /executions/generic:
+    post:
+      tags:
+        - execution
+      summary: "Submit an execution request"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Body
+          in: "body"
+          description: execution request
+          required: true
+          schema:
+            $ref: "#/definitions/ExecutionRequest"
+      
+      responses:
+       '200':
+          description: "The execution request"
+          schema:
+            $ref: "#/definitions/ExecutionRequest"
+  /executions/generic/{id}:
+    get:
+      tags:
+        - execution
+      summary: "Get the status of the specified execution"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Execution ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The requested status"
+          schema:
+            $ref: "#/definitions/Output"
+  /executions/generic/{id}/actions/stop:
+    post:
+      tags:
+        - execution
+      summary: "Stop the specified execution"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: id
+          in: "path"
+          description: execution ID
+          required: true
+          type: string
+      responses:
+        '204':
+          description: "Execution stopped successfully"
+  /objects:
+    get:
+      tags:
+        - object
+      summary: "List the buckets belonging to the account"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The list of buckets belonging to this account."
+          schema:
+            type: array
+            items: 
+             $ref: "#/definitions/Bucket" 
+  /objects/{bucket}/list/{path}:
+    get:
+      tags:
+        - object
+      summary: "List the objects in the specified bucket"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: bucket
+          in: path
+          description: Bucket name
+          required: true
+          type: string
+        - name: path
+          in: path
+          description: Subpath of the resource
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The list of objects at the specified path"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Object"
+  /objects/{bucket}/get/{path}:
+    get:
+      tags:
+        - object
+      summary: "Get the specified object"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: bucket
+          in: path
+          description: Bucket name
+          required: true
+          type: string
+        - name: path
+          in: path
+          description: Subpath of the resource
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The specified object"
+  /streams:
+    get:
+      tags:
+        - stream
+      summary: "List the streams belonging to the account"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "List of streams"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Stream"
+  /streams/{id}:
+    get:
+      tags:
+        - stream
+      summary: "Get the status of the specified stream"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Stream ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The status of the stream"
+          schema:
+            $ref: "#/definitions/Stream"
+    delete:
+      tags:
+        - stream
+      summary: "Stop the specified stream"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Stream ID
+          required: true
+          type: string
+      responses:
+        '204':
+          description: "The stream was stopped successfully."
+  /templates:
+    post:
+      tags:
+        - templates
+      summary: "Create a template"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: Body
+          in: body
+          schema:
+            $ref: "#/definitions/Template"
+      responses:
+        '200':
+          description: "Template created successfully."
+          schema:
+            $ref: "#/definitions/Template"
+    get:
+      tags:
+        - templates
+      summary: "List templates accessible to the current user"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "The list of templates"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Template"
+  /templates/{id}:
+    get:
+      tags:
+        - templates
+      summary: "Get template with specified ID"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: ID of the notebook
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "Requested template"
+          schema:
+            $ref: "#/definitions/Template"
+    delete:
+      tags:
+        - templates
+      summary: "Delete template with specified ID"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Thingspace user bearer token
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: ID of the notebook
+          required: true
+          type: string
+      responses:
+        '204':
+          description: "Template deleted successfully"
+definitions:
+  Execution:
+    type: object
+    properties:
+      id:
+        type: string
+        description: "Unique identifier for the execution"
+        readOnly: true
+      status:
+        type: string
+        description: "Status of the execution"
+      statusDescription:
+        type: string
+        description: "statusDescription is the string representation of the status"
+      lastExecution:
+        type: string
+        description: "The time when the execution was last executed."
+  Transformation:
+    type: object
+    properties:
+      kind:
+        description: "Thingspace resource type."
+        type: string
+        readOnly: true 
+        default: "ts.transformation"
+      id:
+        description: "Unique identifier for this transformation"
+        type: string
+        readOnly: true
+      executionId:
+        type: string
+        description: "Execution ID is the unique identifier for an execution request"
+        readOnly: true
+      version:
+        description: "Schema version"
+        type: string
+      createdOn:
+        description: "Date this transformation was created"
+        type: string
+        readOnly: true
+      lastUpdated:
+        description: "Date this transformation was last updated"
+        type: string
+        readOnly: true
+      name:
+        description: "Name of this transformation"
+        type: string
+      description:
+        description: "Description of this transformation"
+        type: string
+      scheduled:
+        description: "Marks whether this transformation is scheduled or not."
+        type: boolean
+        readOnly: true
+      schedule: 
+        $ref: '#/definitions/Schedule'
+        readOnly: true
+      timeout:
+        description: "Amount of time to wait for execution to finish before terminating."
+        type: integer
+        format: "int"
+      arguments:
+        description: "Arguments is a set of key/value pairs supplied as inputs to an execution"
+        type: object
+      entryPoint:
+        type: string
+      language:
+        type: string
+      code:
+        $ref: '#/definitions/Code'
+      memory:
+        type: integer
+        format: "uint64"
+    example:
+      kind: ts.transformation
+      name: test transformation
+      description: test transformation description
+      timeout: 180
+      arguments:
+        arg1: verizon
+        arg2: waltham
+      entryPoint: main
+      language: lua
+  Code:
+    type: object
+    properties:
+      type:
+        type: string
+        description: "Type of the code provided to the execution."
+        enum: [
+          "Object",
+          "Source"
+          ]
+      value:
+        type: string
+        description: "The base64 encoded code."
+    example:
+      type: Source
+      value: bG9jYWwgb3V0cHV0ID0gcmVxdWlyZSgibnNPdXRwdXQiKQ0KDQpmdW5jdGlvbiBtYWluKCkNCiAgICBvdXRwdXQucHJpbnQoIkhlbGxvIFdvcmxkISIpDQplbmQ=
+  Schedule:
+    type: object
+    properties:
+      kind:
+        type: string
+        default: "ts.schedule"
+        readOnly: true
+        description: "Thingspace resource type."
+      id:
+        type: string
+        description: "Unique identifier for the schedule"
+        readOnly: true
+      version:
+        type: string
+      createdOn:
+        type: string
+        readOnly: true
+        description: "Date the schedule was created."
+      lastUpdated:
+        type: string
+        description: "Date the schedule was last updated."
+      event:
+        $ref: "#/definitions/Event"
+    example:
+      kind: ts.schedule
+      event:
+        category: Timer
+        name: test timer
+        value: '*/45 * * * * *'
+  Event:
+    description: "The event that triggers the schedule."
+    type: object
+    properties:
+      category:
+        type: string
+        description: "Type of event that triggers the schedule."
+        enum: [
+          "Timer",
+          "Device"
+        ]
+      name:
+        type: string
+        description: "Name of the event"
+      value:
+        type: string
+        description: "Value of the trigger (i.e. deviceId, cron schedule)"
+    example:
+      category: Timer
+      name: test timer
+      value: '*/45 * * * * *'
+  Notebook:
+    type: object
+    properties:
+      kind:
+        type: string
+        description: "Thingspace resource type"
+        default: "ts.notebook"
+        readOnly: true
+      id:
+        type: string
+        description: "ID is a unique idenitifer for the notebook"
+        readOnly: true
+      etag:
+        type: string
+        description: "eTag is an id used for validation of a notebook when patching."
+      version:
+        type: string
+        description: "Version is the schema version of a notebook"
+        readOnly: true
+      createdOn:
+        type: string
+        description: "createdOn is the date that the notebook was created"
+        readOnly: true
+      lastUpdate:
+        type: string
+        description: "lastUpdated is the date the notebook was last updated"
+        readOnly: true
+      name: 
+        type: string
+        description: "name is the name of the notebook"
+      permissions :
+        type: string
+        description: "permissions are the permissions of the user who retrieved the notebook"
+        readOnly: true
+      cells:
+        type: array
+        description: "cells are individual units of code, execution results, and display options"
+        items:
+              $ref: '#/definitions/Cell'
+    example:
+      kind: ts.notebook
+      name: test notebook
+  Cell:
+    type: object
+    required: [id]
+    properties: 
+      id:
+        type: string
+        description: "id is a unique identifier for the cell. Note that this is user specified"
+      executionId:
+        type: string
+        description: "Execution ID is the unique identifier for an execution request"
+        readOnly: true
+      name:
+        type: string
+        description: "name is the name of the cell"
+      input:
+        $ref: "#/definitions/Input"
+      output:
+        $ref: "#/definitions/Output"
+      settings: 
+        $ref: "#/definitions/Settings"
+    example:
+      - name: test cell
+  Input:
+    description: "Input is an object containing the input settings of a cell"
+    type: object
+    required: [entryPoint, body]
+    properties:
+      type: 
+        type: string
+        description: "Type is the type of a cell."
+        enum: [
+          "static",
+          "code",
+          "query"
+          ]
+      language:
+        type: string
+        description: "Language is the programming language used in a cell."
+      arguments:
+        type: object
+        description: "arguments is a selection of input key/value pairs supplied as input for a cell execution"
+      entryPoint: 
+        type: string
+        description: "entryPoint is the initial function called in the code of a cell"
+      body:
+        type: string
+        description: "body is the code of a cell. Note that this is plain text."
+      timeout:
+        type: integer
+        description: "timeout is the period of time to allow a cell to execute for before termination."
+        example:
+          type: code
+          language: Lua
+          arguments:
+            arg1: Verizon
+            arg2: Waltham
+          entryPoint: main
+          body: bG9jYWwgb3V0cHV0ID0gcmVxdWlyZSgibnNPdXRwdXQiKQ0KDQpmdW5jdGlvbiBtYWluKCkNCiAgICBvdXRwdXQucHJpbnQoIkJvbmpvdXIhIikNCmVuZA==
+          timeout: 180
+  Output:
+    description: "Output is an object containing the output settings of a cell"
+    type: object
+    readOnly: true
+    properties:
+      status: 
+        type: string
+        description: "status is the execution status of a cell. I.e. succeeded, failed, timed out, internal error"
+      statusDescription:
+        type: string
+        description: "statusDescription is the string representation of the status"
+      executionOutput: 
+        type: string
+        description: "executionOutput is any string output for a cell (i.e. stderr/stdout)"
+      executionResults:
+        type: object
+        description: "executionResults is an object containing the results of an execution."
+      elapsedTime:
+        type: integer
+        description: "The ammount of time to execute."
+      lastExecution:
+        type: string
+        description: "The last execution time"
+  Settings: 
+    description: "Settings is an object containing the display settings of a cell"
+    type: object
+    properties:
+      status:
+        type: string
+        description: "Status is an indicator of success/failure for the execution of a cell."
+      showCode:
+        type: boolean
+        description: "showCode is a boolean indicating whether the code should be shown for a cell"
+      showOutput:
+        type: boolean
+        description: "showOutput is a boolean indicating whether the output should be shown for a cell."
+      showConfiguration:
+        type: boolean
+        description: "showConfiguration is a boolean indicating whether a cell should be configurable (i.e. change graph settings)"
+      visualization:
+        type: object
+        description: "Visualization defines settings specific to the display of a mime type. I.e. graph settings for d3 charts."
+      memory:
+        type: integer
+        format: "uint64"
+        description: "Memory for the notebook to use in megabytes."
+    example: 
+      status: ''
+      showCode: true
+      showOutput: true
+      showConfiguration: true
+      visualization:
+        parameters: null
+      memory: 100
+  Stream:
+    type: object
+    properties:
+        id:
+          type: string
+          description: "Unique identifier for the stream"
+          readOnly: true
+        executionId:
+          type: string
+          description: "Unique identifier for the execution"
+          readOnly: true
+        memory:
+          type: integer
+          format: "uint64"
+          description: "The ammount of memory in megabytes allocated to the stream"
+        source:
+          $ref: "#/definitions/Source"
+        functions:
+          type: array
+          items:
+            $ref: "#/definitions/Function"
+        createdOn:
+          type: string
+          description: "Date the stream was created"
+        updatedOn:
+          type: string
+          description: "Date the stream was last updated"
+        status:
+          type: string
+          description: "Status of the stream"
+        errorDescr:
+          type: string
+          description: "Standard error for the stream"
+        description:
+          type: string
+          description: "Description of the stream"
+  Source:
+    type: object
+    properties:
+      name:
+        type: string
+      connection: 
+        type: object
+  Function:
+    type: object
+    properties:
+      name:
+        type: string
+      parameters:
+        type: object
+  ExecutionRequest:
+    type: object
+    properties:
+      executionId:
+        type: string
+        readOnly: true
+        description: "Unique identifier for the execution"
+      name:
+        type: string
+        description: "Name of the execution"
+      language:
+        type: string
+        description: "Programming language used"
+        enum:
+          - lua
+      entryPoint:
+        type: string
+        description: "Initial function to execute in the code"
+      arguments:
+        type: object
+        description: "Map of string to interface of arguments"
+      code:
+        type: string
+        description: "Code to execute"
+      timeout:
+        type: integer
+        format: "int"
+        description: "Ammount of time to allow the code to execute before timing out"
+      callback:
+        type: string
+        description: "Callback URL to send execution results to"
+      memory:
+        type: integer
+        format: "uint64"
+        description: "Ammount of memory to allocate to the execution."
+    example:
+      - name: Test Execution
+        language: lua
+        entryPoint: main
+        code: bG9jYWwgb3V0cHV0ID0gcmVxdWlyZSgibnNPdXRwdXQiKQ0KDQpmdW5jdGlvbiBtYWluKCkNCiAgICBvdXRwdXQucHJpbnQoIkhlbGxvIFdvcmxkISIpDQplbmQ=
+        timeout: 180
+        callback: 127.0.0.1
+        memory: 100
+  Object:
+    type: object
+    properties:
+      key:
+        type: string
+        description: "Name/path of the object"
+      lastModified:
+        type: string
+        description: "Date the resource was last modified"
+      size:
+        type: integer
+        format: "int64"
+        description: "Size of the object"
+      etag:
+        type: string
+        description: "Unique identifier used for validation of updates."
+    example:
+      name: test-file-from-string
+      lastModified: '2017-09-18T15:29:30Z'
+      size: 9
+      etag: '"24346e1b50066607059af36e3b684b24"'
+  Bucket:
+    type: object
+    properties:
+      name: 
+        type: string
+        description: "Name of the bucket"
+      creationDate:
+        type: string
+        description: "Date the bucket was created"
+    example:
+      name: test-bucket
+      creationDate: '2017-09-18T15:04:32.833Z'
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        description: "ID of the user"
+      accountId:
+        type: string
+        description: "AccountID of the user"
+      displayName:
+        type: string
+        description: "Displayed name of the user"
+      email:
+        type: string
+        description: "Email of the user"
+      imageId:
+        type: string
+        description: "ID for the user avatar"
+      permissions:
+        type: string
+        description: "Permissions given to the user"
+        enum: 
+          - Owner
+          - Read
+          - ReadWrite
+          - ReadWriteExecute
+    example:
+      id: f0510075-eeac-692a-e04c-3d4677dc96b9
+      accountId: c1b10b7f-d883-6d6c-f61a-82d11ac7eadc
+      email: brian.avery@verizon.com
+      permissions: Owner
+  Template:
+    type: object
+    properties:
+      kind: 
+        description: "Thingspace resource type"
+        readOnly: true
+        default: "ts.template"
+        type: string
+      id:
+        description: "Unique identifier for this template"
+        readOnly: true
+        type: string
+      version:
+        description: "Schema version of the template"
+        type: string
+      etag:
+        description: "Used to identify versions of the template for patch requests."
+        type: string
+      createdOn:
+        description: "Date that the template was created."
+        type: string
+      name: 
+        description: "Name of the template"
+        type: string
+      description:
+        description: "Description of the template"
+        type: string
+      type:
+        description: "Kind of the template"
+        enum: 
+          - notebook
+          - cell
+      data: 
+        description: "Contains the content of the template (i.e. notebook resource or cell resource)"
+      published:
+        type: integer
+        description: "Whether the tempalte is available to all users or only the creator"
+    example:
+      kind: ts.template
+      id: 545ace6a-5c8d-40ae-a559-7541d2234aca
+      version: '1.0'
+      createdOn: '0001-01-01T00:00:00Z'
+      name: Multiple Devices - MultiBar Graph
+      description: Template used to generate a MultiBar Graph for a field on one or more ThingSpace devices.
+      type: cell
+      data:
+        id: ''
+        name: MultiBar Graph
+        input:
+          type: Code
+          language: lua
+          arguments:
+            deviceIds: ''
+            deviceNames: ''
+            field: ''
+            limit: ''
+            subfield: ''
+          entryPoint: main
+          body: LS0KLS0gQ29weXJpZ2h0IDIwMTYgVmVyaXpvbiBMYWJvcmF0b3JpZXMuIEFsbCByaWdodHMgcmVzZXJ2ZWQuCi0tIFNlZSBwcm92aWRlZCBMSUNFTlNFIGZpbGUgZm9yIHVzZSBvZiB0aGlzIHNvdXJjZSBjb2RlLgotLQpsb2NhbCB0cyA9IHJlcXVpcmUoInRzIikKbG9jYWwgb3V0cHV0ID0gcmVxdWlyZSgibnNPdXRwdXQiKQpmdW5jdGlvbiBtYWluKCkKLS0gR2V0IGlucHV0IGFyZ3VtZW50cwpsb2NhbCBkZXZpY2VJZHMgPSBjb250ZXh0LkFyZ3NbImRldmljZUlkcyJdCmxvY2FsIGRldmljZU5hbWVzID0gY29udGV4dC5BcmdzWyJkZXZpY2VOYW1lcyJdCmxvY2FsIGZpZWxkID0gY29udGV4dC5BcmdzWyJmaWVsZCJdCmxvY2FsIHN1YmZpZWxkID0gY29udGV4dC5BcmdzWyJzdWJmaWVsZCJdCmxvY2FsIGxpbWl0ID0gdG9udW1iZXIoY29udGV4dC5BcmdzWyJsaW1pdCJdKQotLSBWZXJpZnkgcmVxdWlyZWQgaW5wdXRzCmlmIGlzRW1wdHkoZGV2aWNlSWRzKSB0aGVuCmVycm9yKCJkZXZpY2VJZHMgaXMgZW1wdHkuIikKZW5kCmlmIGlzRW1wdHkoZmllbGQpIHRoZW4KZXJyb3IoImZpZWxkIGlzIGVtcHR5LiIpCmVuZAotLSBQYXJzZSBkZXZpY2UgaWRzLgpsb2NhbCBpZHMgPSBzcGxpdChkZXZpY2VJZHMsICIsIikKbG9jYWwgbmFtZXMgPSBzcGxpdChkZXZpY2VOYW1lcywgIiwiKQpsb2NhbCBkYXRhVGFibGUgPSB7Y29sdW1ucyA9IHt9LCByb3dzID0ge319Ci0tIEdldCBmaWVsZCB2YWx1ZSBmb3IgZGV2aWNlKHMpCmZvciBpID0gMSwgI2lkcywgMSBkbwpsb2NhbCBkZXZpY2VUYWJsZSA9IGdldERldmljZUZpZWxkcyhpZHNbaV0sIGZpZWxkLCBzdWJmaWVsZCwgbGltaXQpCmxvY2FsIGNvbHVtbk5hbWUgPSBkZXZpY2VUYWJsZS5jb2x1bW5zWzFdCmlmIG5hbWVzW2ldIH49IG5pbCB0aGVuCmNvbHVtbk5hbWUgPSBuYW1lc1tpXQplbmQKZGF0YVRhYmxlLmNvbHVtbnNbaV0gPSBjb2x1bW5OYW1lCmZvciBqID0gMSwgI2RldmljZVRhYmxlLnJvd3MsIDEgZG8KaWYgZGF0YVRhYmxlLnJvd3Nbal0gPT0gbmlsIHRoZW4KZGF0YVRhYmxlLnJvd3Nbal0gPSB7fQplbmQKdGFibGUuaW5zZXJ0KGRhdGFUYWJsZS5yb3dzW2pdLCBkZXZpY2VUYWJsZS5yb3dzW2pdWzFdKQplbmQKZW5kCnJldHVybiBnZW5lcmF0ZVRhYmxlKGRhdGFUYWJsZSkKZW5kCi0tIEhlbHBlciBmdW5jdGlvbiB1c2VkIHRvIGdldCBUaGluZ1NwYWNlIGRldmljZSBmaWVsZC4KZnVuY3Rpb24gZ2V0RGV2aWNlRmllbGRzKGlkLCBmaWVsZCwgc3ViZmllbGQsIGxpbWl0KQpsb2NhbCByZXNwLCBlcnIgPSB0cy5nZXREZXZpY2VGaWVsZHMoaWQsIGZpZWxkLCBzdWJmaWVsZCwgbGltaXQpCmlmIGVyciB+PSBuaWwgdGhlbgplcnJvcihlcnIpCmVuZAppZiByZXNwID09IG5pbCB0aGVuCmVycm9yKCJubyByZWNvcmRzIGZvdW5kIikKZW5kCnJldHVybiByZXNwCmVuZAotLSBIZWxwZXIgZnVuY3Rpb24gdXNlZCB0byBnZW5lcmF0ZSBOb3J0aFN0YXIgdGFibGUuCmZ1bmN0aW9uIGdlbmVyYXRlVGFibGUodGFibGUpCmxvY2FsIG91dCwgZXJyID0gb3V0cHV0LnRhYmxlKHRhYmxlKQppZihlcnIgfj0gbmlsKSB0aGVuCmVycm9yKGVycikKZW5kCnJldHVybiBvdXQKZW5kCi0tIEhlbHBlciBmdW5jdGlvbiB1c2VkIHRvIHNwbGl0IGRlbGltaXRlZCBzdHJpbmdzIGludG8gbHVhIHRhYmxlLgpmdW5jdGlvbiBzcGxpdChzdHIsIGRlbGltKQppZiBzdHJpbmcuZmluZChzdHIsIGRlbGltKSA9PSBuaWwgdGhlbgpyZXR1cm4geyBzdHIgfQplbmQKbG9jYWwgYXJyYXkgPSB7fQpsb2NhbCBpbmRleCA9IDEKZm9yIHZhbHVlIGluIHN0cmluZy5nbWF0Y2goc3RyLCAiKFteIiAuLiBkZWxpbSAuLiAiXSspIikgZG8KYXJyYXlbaW5kZXhdID0gdmFsdWUKaW5kZXggPSBpbmRleCArIDEKZW5kCnJldHVybiBhcnJheQplbmQKLS0gSGVscGVyIGZ1bmN0aW9uIHVzZWQgdG8gY2hlY2sgaWYgc3RyaW5nIGlzIGVtcHR5LgpmdW5jdGlvbiBpc0VtcHR5KHN0cikKcmV0dXJuIHN0ciA9PSBuaWwgb3Igc3RyID09ICIiCmVuZA==
+          timeout: 180
+        output:
+          lastExecution: '0001-01-01T00:00:00Z'
+        settings:
+          status: ''
+          showCode: false
+          showOutput: true
+          showConfiguration: false
+          visualization:
+            parameters:
+              type: multiBarChart
+          memory: 100
+        executionId: ''
+      published: 2
+  ManagementError:
+    type: object
+    properties:
+      HttpStatus:
+        type: integer
+        format: int32
+      Id:
+        type: string
+      Description:
+        type: string
+      Uri:
+        type: string
+    example:
+      error: server_error
+      error_description: 'Error, failed to get token info due to internal error - Failed to load accessData.'
+      
+

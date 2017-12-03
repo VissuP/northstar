@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+<div style="border: thin solid lightgrey">
+<span
+        title="Click to edit"
+        (click)="startEdit()"
+        *ngIf="!editing"
+>
+           <span [innerHTML]="htmlSrc"></span>
+      </span>
+    <form (submit)="stopEdit()" *ngIf="editing">
+        <div class="panel panel-body" [attr.id]="i">
+            <textarea class="form-control" [(ngModel)]="cell.code" name="code" (blur)="stopEdit()"
+                      style="resize: vertical" autofocus></textarea>
+        </div>
+
+    </form>
+</div>
