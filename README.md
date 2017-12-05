@@ -19,42 +19,49 @@ visualization, NorthStar notebooks are used.
 * Casssandra deployed on Mesos
 * Redis deployed on Mesos (optional)
 
-## Setup GOPATH
+## Getting the Source and setting your GOPATH
 
+Create a working directory and set your GOPATH to that directory
 ```
-$ mkdir $HOME/go
-$ cd $HOME/go
-$ Copy the ".envrc" file located under build directory into here.
+$ mkdir ns
+$ export GOPATH=$PWD
+$ cd $GOPATH
+```
+Use go tool to get the northstar source tree
+```
+$ go get -d github.com/verizonlabs/northstar
+```
+
+## Setup build environment
+Copy the ".envrc" file located under build directory and make edits to suit your environment.  Example:
+```
+$ cp src/github.com/verizonlabs/northstar/build/.envrc .
 $ direnv allow
-```
+$ cd $GOPATH/src/github.com/verizonlabs/northstar
 
-## Setup environment
-
-```
 $ export CONTACT=<your email>
 $ export ENV=<your env name> (e.g., example)
 $ export DC=<your dc name> (e.g., dc1)
 $ export TAG=<your release tag> (e.g., release-1.0.0)
-$ Open your DC file (e.g., make/env/dc1.mk) and add your Docker Hub username to DOCKER_USER.
 ```
 
-## Fetch services
-
-```
-$ go get -d github.com/verizonlabs/northstar
-$ cd $GOPATH/src/github.com/verizonlabs/northstar
-```
+Open your DC file (e.g., make/env/dc1.mk) and add your Docker Hub username to DOCKER_USER.
 
 ## Build and push base Docker images
 
+NorthStar relies on a number of *builders* (docker images that contain various compilers and tools) in order to be built.  These *builders* can be created for your environment and tagged with your identifier by running the following script.
 ```
 $ ./docker/build.sh
+```
+If you wish to push the builders to a repository you can do so by setting the DOCKER_REGISTRY_HOST_PORT env variable (which defaults to docker.io)
+```
+$ ./docker/push.sh
 ```
 
 ## Build services
 
 ```
-$ make buid && make push
+$ make build && make push
 ```
 
 # Deploy/undeploy services
