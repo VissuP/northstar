@@ -3,4 +3,20 @@ marathon_app.json
 marathon_base.json
 Dockerfile.generated
 target
+
+# ignore the built binaries
+auth/auth
+cron/cron
+data/data
+dpe-stream/dpe-stream
+kafkamngr/kafkamngr
+nssim/nssim
+object/object
+processing/processing
+rte-lua/rte-lua
+rte-lua/botc/rte-lua-botc
+docker/logger/logger
+docker/logger/Dockerfile.*.generated
+
+# common files to ignore
 .idea
