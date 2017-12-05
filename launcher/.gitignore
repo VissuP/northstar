@@ -1,0 +1,3 @@
+# ignore deployment files
+deploy/*
+!deploy/README
