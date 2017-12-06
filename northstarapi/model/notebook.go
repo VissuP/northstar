@@ -21,8 +21,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/verizonlabs/northstar/pkg/mlog"
 	"github.com/verizonlabs/northstar/northstarapi/config"
+	"github.com/verizonlabs/northstar/pkg/mlog"
 )
 
 const (
@@ -143,7 +143,7 @@ type Settings struct {
 // Validate validates the settings
 func (settings *Settings) Validate() error {
 	if settings.Memory > config.Configuration.MaxMemory {
-		return fmt.Errorf("requested memory %d is greater than the max of: %d", settings.Memory, config.Configuration.MaxMemory)
+		return fmt.Errorf("Requested memory (%d) is greater than the max of: %d.", settings.Memory, config.Configuration.MaxMemory)
 	}
 
 	return nil
